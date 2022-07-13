@@ -18,7 +18,7 @@ calcTitle.textContent = "Odin Calculator"
 const calcDisplay = document.createElement('div') // text
 calcDisplay.setAttribute('class', 'calcDisplay')
 calcDisplay.classList.add('content');
-calcDisplay.textContent = "888"
+calcDisplay.textContent = "'0'"
 
 const calcModel = document.createElement('div') //text
 calcModel.setAttribute('class', 'calcModel');
@@ -58,7 +58,7 @@ for (i = 0; i < 20; i++) {
   btn.classList.add('btn', 'btnSmall');
   btn.setAttribute('id', `btn${i}`);
   btn.textContent = `${i}`;
-  btn.addEventListener('click', logClick)
+  btn.addEventListener('click', buttonPress)
   
   calcBottom.appendChild(btn)
 }
@@ -68,7 +68,7 @@ const btnPlus = document.createElement('button'); //bigger button lays on top of
 btnPlus.classList.add('content');
 btnPlus.classList.add('class', 'btn');
 btnPlus.setAttribute('id', 'btnPlus');
-btnPlus.addEventListener('click', logClick)
+btnPlus.addEventListener('click', buttonPress)
 btnPlus.textContent = "+";
 calcBottom.append(btnPlus);
 
@@ -110,28 +110,47 @@ document.getElementById("btn19").textContent = '='
 // let display = calcDisplay.textContent;
 // display = '5555';
 
-calcDisplay.textContent = 888;
+calcDisplay.textContent = '';
 
 
-function logClick(e) {
+function buttonPress(e) {
   
   let buttonString = e.target.textContent;
+  let operation = '';
 
-  if (!isNaN(buttonString) && isFinite(buttonString)) {
-    if (calcDisplay.textContent == '0.') {
-      calcDisplay.textContent = '';
-    };
-
-    //if char furthest right is (dot), delete (dot);
-    // calcDisplay.textContent.split('')
-
-    // console.log(calcDisplay.textContent);
-    
-    calcDisplay.textContent += buttonString + '.';
+  if (!isNaN(buttonString) && isFinite(buttonString) && e.target.textContent !== '.') {
+    if (calcDisplay.textContent == '0') {calcDisplay.textContent = ''}; // remove left 0 before other nums
+    calcDisplay.textContent += buttonString ;
   }
 
-  if (e.target.textContent == 'CE') calcDisplay.textContent = '0.';
+  if (e.target.textContent == '.' && !calcDisplay.textContent.includes('.')) {  // does not include .
+    calcDisplay.textContent += ".";
+  }
+  
+  if (e.target.textContent == 'CE') calcDisplay.textContent = '0';
+  if (e.target.textContent == 'C') calcDisplay.textContent = '0';
+
+  switch (e.target.textContent) {
+    case '+':
+    case '-':
+      operation = e.target.textContent;
+      
+    case 'x':
+      operation = "*"
+      
+    case '÷':
+      operation = "/"
+      
+  }
+  
   
   // console.log(e.target.id);
   // console.log(e.target.className);
+
+  
 }
+
+// center text on buttons, mobile looks off
+// remove dot, then add it back at the end
+// add hover effect, make it half-subtle
+// use button-loop to add big button, do not do it separately

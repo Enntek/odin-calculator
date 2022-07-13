@@ -121,10 +121,12 @@ body {
 }
 
 .btn {
+
   background-color: #e8eaf0;
   /* background-color: #e8eaf0; */
   border-radius: 3px;
   font-size: 20px;
+  padding:0px;
 }
 
 .btnSmall {
