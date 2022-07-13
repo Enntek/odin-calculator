@@ -89,10 +89,10 @@ document.getElementById("btn18").textContent = 'na'
 document.getElementById("btn19").textContent = '='
 
 calcDisplay.textContent = '';
-let previousString = '';
-let currentString = '';
+let previousOperand = '';
+let currentOperand = '';
 let operator = '';
-let previousPress = '';
+let previousStroke = '';
 
 function operateAB(a, b, sign) {
   switch (sign) {
@@ -108,8 +108,6 @@ function operateAB(a, b, sign) {
 }
 
 function keyPress(e) {
-
-  
 
   function getKey(e) {
 
@@ -143,10 +141,7 @@ function keyPress(e) {
   }
 
   
-  let currentPress = getKey(e);
-
-  console.log(currentPress);
-
+  let currentStroke = getKey(e);
 
   let isNumber = (a) => (isFinite(a) && !isNaN(a));
 
@@ -154,80 +149,77 @@ function keyPress(e) {
 
   let clearMemory = () => {
     calcDisplay.textContent = '';
-    currentString = '';
-    previousString = ''; 
+    currentOperand = '';
+    previousOperand = ''; 
     operator = ''; 
-    previousPress = '';
+    previousStroke = '';
   };
 
-  if (currentPress == 'C') {clearMemory()};
-  if (currentPress == 'CE' && previousPress == 'CE') {clearMemory()};
+  if (currentStroke == 'C') {clearMemory()};
+  
+  if (currentStroke == 'CE' && previousStroke == 'CE') {clearMemory()};
   
 
-  if (currentPress == 'CE') {
-    previousPress = 'CE';
-    currentString = '';
+  if (currentStroke == 'CE') {
+    previousStroke = 'CE';
+    currentOperand = '';
     calcDisplay.textContent = '';
   }
   
-  if (isNumber(currentPress) && calcDisplay.textContent !== 'E'){
+  if (isNumber(currentStroke) && calcDisplay.textContent !== 'E'){
 
-    if (+calcDisplay.textContent == 0) {currentString = ''}; //remove leading 0
+    if (+calcDisplay.textContent == 0) {currentOperand = ''}; //remove leading 0
 
-    if (!isOperator(previousPress) && previousPress == '=') {
-    
-      previousPress = '';
-      previousString = '';
+    if (previousStroke == '=') {
+    // if (!isOperator(previousStroke) && previousStroke == '=') {
+      previousStroke = '';
+      previousOperand = '';
       operator = '';
-      previousPress = currentPress;
-      currentString = ''
-      currentString += currentPress
-      calcDisplay.textContent = currentString;
+      previousStroke = currentStroke;
+      currentOperand = ''
+      currentOperand += currentStroke
+      calcDisplay.textContent = currentOperand;
   
-    } else if (!isOperator(previousPress)) {
-      
-      previousPress = currentPress;
-      currentString += currentPress;
-      calcDisplay.textContent = currentString;
-  
+    } else if (!isOperator(previousStroke)) {
+      previousStroke = currentStroke;
+      currentOperand += currentStroke;
+      calcDisplay.textContent = currentOperand;
     } 
 
-    else if (isOperator(previousPress)) {
-
-      previousPress = currentPress;
-      previousString = currentString;
-      currentString = ''
-      currentString += currentPress;
-      calcDisplay.textContent = currentString;
-
+    else if (isOperator(previousStroke)) {
+      previousStroke = currentStroke;
+      previousOperand = currentOperand;
+      currentOperand = ''
+      currentOperand += currentStroke;
+      calcDisplay.textContent = currentOperand;
     }
   }
 
-  if (currentPress == '.' && !currentString.includes('.')) {
-    currentString += '.'
-    calcDisplay.textContent = currentString;
+  if (currentStroke == '.' && !currentOperand.includes('.')) {
+    currentOperand += '.'
+    calcDisplay.textContent = currentOperand;
   }
 
-  if (isOperator(currentPress) && previousPress!== '=') {
-    operator = currentPress;
-    previousPress = currentPress;
-  } else if (isOperator(currentPress) && previousPress == '=') {
-    operator = currentPress;
-    previousPress = currentPress;
+  if (isOperator(currentStroke) && previousStroke!== '=') {
+    operator = currentStroke;
+    previousStroke = currentStroke;
+  } else if (isOperator(currentStroke) && previousStroke == '=') {
+    operator = currentStroke;
+    previousStroke = currentStroke;
   }
   
-  if (currentPress == '=') {
+  if (currentStroke == '=') {
 
-    if(operator == '÷' && +currentString == 0) return calcDisplay.textContent='Oh no!';
+    if(operator == '÷' && +currentOperand == 0) return calcDisplay.textContent='Oh no!';
 
-    calcDisplay.textContent = operateAB(previousString, currentString, operator);
-    previousPress = '=';
-    previousString = calcDisplay.textContent;
+    calcDisplay.textContent = operateAB(previousOperand, currentOperand, operator);
+    previousStroke = '=';
+    previousOperand = calcDisplay.textContent;
   };
 
-  if (currentPress == '%' && isNumber(calcDisplay.textContent)) {
+  if (currentStroke == '%' && isNumber(calcDisplay.textContent)) {
     calcDisplay.textContent = calcDisplay.textContent * .01
-    currentString = calcDisplay.textContent;
+    currentOperand = calcDisplay.textContent;
   }
 
   if (calcDisplay.textContent % 1 != 0 && calcDisplay.textContent !== 'E') {
