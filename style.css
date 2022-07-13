@@ -1,0 +1,149 @@
+body {
+  text-align: center;
+  background-color:papayawhip;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: Sans-serif;
+}
+.container {
+  background-color:cornsilk;
+  height: 97vh;
+  width: 97vw;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.calcFrame {
+  display:flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  background-color:rgb(206, 229, 233);
+  border: 1px solid rgb(242, 245, 234);
+  border-radius: 5px;
+
+  height: 400px;
+  width: 300px;
+
+  box-shadow: 6px 6px 9px 3px rgb(105, 106, 119), inset 1px 1px 1px rgb(229, 230, 233);
+  /* box-shadow:; */
+
+}
+
+.calcTop {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+}
+
+.calcTitle {
+  margin: 7px;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: Helvetica, sans-serif;
+
+  color:white;
+  text-shadow:3px 2px 2px #888888;
+}
+
+.calcDisplay {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+
+  background-color: rgb(140, 140, 158);
+  /* margin: 5px 0; */
+  padding: 5px 15px;
+  height: 50px;
+  width: 225px;
+  font-size: 35px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-shadow:1.5px 2px 3px #484e66;
+  box-shadow:inset 2px 2px 5px #4e4e4e;
+  border-radius: 2px;
+  
+  
+}
+
+.calcModel {
+  font-size: 12px;
+  width:280px;
+  display:flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: center;
+  color:white;
+  margin-top: 3px;
+  margin-bottom: 5px;
+  text-shadow:3px 2px 2px #888888;
+}
+
+.calcSolarFrame {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  
+
+  height:35px;
+  width:300px;
+  background-color: #4a446e;
+}
+
+.calcSolarText {
+  margin-left: 15px;
+  color:white;
+  font-size: 10px;
+  text-shadow:3px 2px 2px #252424;
+
+}
+
+.calcSolarPanel {
+  background-color: #3f3e58;
+  margin-right:15px;
+  height:23px;
+  width: 110px;
+  box-shadow: inset 2px 2px 2px rgb(0, 0, 0);
+}
+
+.calcBottom {
+  padding-top:14px;
+  height: 500px;
+  width: 300px;
+  background-color: #dadada;
+  position: relative;
+}
+
+.btn {
+  background-color: #e8eaf0;
+  /* background-color: #e8eaf0; */
+  border-radius: 3px;
+  font-size: 20px;
+}
+
+.btnSmall {
+  height: 45px;
+  width: 45px;
+  margin: 6px;
+}
+
+#btnPlus {
+  position:absolute; top:134px; left:184px;
+  height: 102px;
+  width: 45px;
+}
+
+#btn4 {
+  background-color: #ce6c6c;
+  color: white;
+}
+
+#btn19 {
+  background-color: #abf1f1;
+}
