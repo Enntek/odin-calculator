@@ -43,9 +43,6 @@ calcTop.appendChild(calcDisplay)
 calcTop.appendChild(calcModel)
 calcTop.appendChild(calcSolarFrame)
 
-
-
-
 // add 4 solar cells
 const calcBottom = document.createElement('div')
 calcBottom.setAttribute('class', 'calcBottom');
@@ -100,8 +97,6 @@ document.getElementById("btn19").textContent = '='
 
 // document.querySelector('#1').textContent = '999';
 
-
-
 // calc logic
 // add eventlistener to each button
 // check if button textcontent is a number OR a decimal
@@ -114,33 +109,35 @@ calcDisplay.textContent = '';
 let previousString = '';
 let currentString = '';
 let operator = '';
+let previousPress = '';
 
 
 function buttonPress(e) {
 
   let buttonString = e.target.textContent;
 
-  if ((e.target.textContent == 'CE' && currentString == 'CE') ||
-      (e.target.textContent == 'C')) {
-        calcDisplay.textContent = '0';
-        previousString = '';
-        currentString = '';
-        operator = '';
-      };
+  // press CE twice or C once 
+  if ((e.target.textContent == 'CE' && previousPress == 'CE') || (e.target.textContent == 'C')) {
+    calcDisplay.textContent = '0';
+    previousString = '';
+    currentString = '';
+    operator = '';
+  };
 
+  // press CE once
   if (e.target.textContent == 'CE') {
     calcDisplay.textContent = '0';
-    currentString = 'CE';
+    previousPress = 'CE';
     operator = '';
   };
   
-  
+  // press 0-9
   if (!isNaN(buttonString) && isFinite(buttonString) && e.target.textContent !== '.') {
+
     if (calcDisplay.textContent == '0') {calcDisplay.textContent = ''}; // remove left 0 before other nums
     
-    if (previousString !== '' && operator !== '' && currentString == '') {    //clear display after pressing operator
-      calcDisplay.textContent = ''
-      console.log(123123);
+    if ((previousString !== '') && (operator !== '') && (currentString == '')) {    //clear display after pressing operator
+      calcDisplay.textContent = '';
     }
 
     calcDisplay.textContent += buttonString;
@@ -155,6 +152,7 @@ function buttonPress(e) {
   // press + - * / 
   if (/[+x÷-]/.test(e.target.textContent)) {          
     previousString = calcDisplay.textContent;
+    currentString = '';
     
     if (e.target.textContent == 'x') {
       operator = "*";
@@ -164,20 +162,22 @@ function buttonPress(e) {
       operator = e.target.textContent;
     }
 
-    // calcDisplay.textContent = ''
   };
 
   //press =
   if (e.target.textContent == '=' && currentString !== '') {
     currentString = calcDisplay.textContent;
-    calcDisplay.textContent = previousString + operator + currentString;
+    calcDisplay.textContent = +previousString + +currentString;
+
+    previousString = calcDisplay.textContent;
+    currentString = '';
+
+    // calcDisplay.textContent = previousString + operator + currentString;
 
   }
 
-
   // console.log(e.target.id);
   // console.log(e.target.className);
-
 }
 
 // center text on buttons, mobile looks off
