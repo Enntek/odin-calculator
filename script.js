@@ -111,74 +111,145 @@ let currentString = '';
 let operator = '';
 let previousPress = '';
 
+function operateAB(a, b, sign) {
+  switch (sign) {
+    case ('+'):
+      return +a + +b;
+    case ('-'):
+      return +a - +b;
+    case ('x'):
+      return +a * +b;
+    case ('÷'):
+      return +a / +b;
+  }
+}
 
 function buttonPress(e) {
 
-  let buttonString = e.target.textContent;
+  let currentPress = e.target.textContent;
 
-  // press CE twice or C once 
-  if ((e.target.textContent == 'CE' && previousPress == 'CE') || (e.target.textContent == 'C')) {
-    calcDisplay.textContent = '0';
+  let isNumber = (a) => (isFinite(a) && !isNaN(a));
+
+  let isOperator = (a) => (/[+x÷-]/.test(a))
+
+  // if press C
+  // clear all memory, clear display
+  if (currentPress == 'C') {
+    calcDisplay.textContent = '';
+    currentString = '';
     previousString = '';
-    currentString = '';
     operator = '';
-  };
-
-  // press CE once
-  if (e.target.textContent == 'CE') {
-    calcDisplay.textContent = '0';
-    previousPress = 'CE';
-    operator = '';
-  };
+    previousPress = '';
+  }
+  // if press CE
   
-  // press 0-9
-  if (!isNaN(buttonString) && isFinite(buttonString) && e.target.textContent !== '.') {
-
-    if (calcDisplay.textContent == '0') {calcDisplay.textContent = ''}; // remove left 0 before other nums
-    
-    if ((previousString !== '') && (operator !== '') && (currentString == '')) {    //clear display after pressing operator
-      calcDisplay.textContent = '';
-    }
-
-    calcDisplay.textContent += buttonString;
-    currentString = calcDisplay.textContent;
+  // if number check previous key press, 
+  // > if number OR decimal, add to string
+  if (isNumber(currentPress) && !isOperator(previousPress)) {
+    previousPress = currentPress;
+    currentString += currentPress;
+    calcDisplay.textContent = currentString;
+  } else if (isNumber(currentPress) && isOperator(previousPress)) {
+    previousString = currentString;
+    currentString = ''
+    currentString += currentPress;
+    calcDisplay.textContent = currentString;
   }
 
-  // press .
-  if (e.target.textContent == '.' && !calcDisplay.textContent.includes('.')) {  // avoid multiple .
-    calcDisplay.textContent += ".";
+  // if press decimal check if already decimal
+  
+  if (currentPress == '.' && !currentString.includes('.')) {
+    // previous press??
+    currentString += '.'
+    calcDisplay.textContent = currentString;
+  }
+
+  // if press operator, check last keypress
+  // > if previousPress was operator, replace operator AND previousPress
+  // > if previousPress was number, store number in previousString, store operator, clear currentString
+  if (isOperator(currentPress)) {
+    operator = currentPress;
+    previousPress = currentPress;
   }
   
-  // press + - * / 
-  if (/[+x÷-]/.test(e.target.textContent)) {          
-    previousString = calcDisplay.textContent;
-    currentString = '';
-    
-    if (e.target.textContent == 'x') {
-      operator = "*";
-    } else if (e.target.textContent == '÷') {
-      operator = "/"
-    } else {
-      operator = e.target.textContent;
-    }
-
+  // if press =
+  if (currentPress == '=') {
+    calcDisplay.textContent = operateAB(previousString, currentString, operator);
   };
 
-  //press =
-  if (e.target.textContent == '=' && currentString !== '') {
-    currentString = calcDisplay.textContent;
-    calcDisplay.textContent = +previousString + +currentString;
+  // if press %
+}
 
-    previousString = calcDisplay.textContent;
-    currentString = '';
 
-    // calcDisplay.textContent = previousString + operator + currentString;
+// function buttonPressOld(e) {
 
-  }
+//   let currentPress = e.target.textContent;
+
+//   // press CE twice or C once 
+//   if ((e.target.textContent == 'CE' && previousPress == 'CE') || (e.target.textContent == 'C')) {
+//     calcDisplay.textContent = '0';
+//     previousString = '';
+//     currentString = '';
+//     operator = '';
+//   };
+
+//   // press CE once
+//   if (e.target.textContent == 'CE') {
+//     calcDisplay.textContent = '0';
+//     previousPress = 'CE';
+//     operator = '';
+//   };
+  
+//   // press 0-9
+//   if (!isNaN(currentPress) && isFinite(currentPress) && e.target.textContent !== '.') {
+
+//     if (calcDisplay.textContent == '0') {calcDisplay.textContent = ''}; // remove left 0 before other nums
+    
+//     if ((previousString !== '') && (operator !== '') && (currentString == '')) {    //clear display after pressing operator
+//       calcDisplay.textContent = '';
+//     }
+
+//     calcDisplay.textContent += currentPress;
+//     currentString = calcDisplay.textContent;
+//   }
+
+//   // press .
+//   if (e.target.textContent == '.' && !calcDisplay.textContent.includes('.')) {  // avoid multiple .
+//     calcDisplay.textContent += ".";
+//     previousString = currentString;
+//   }
+  
+//   // press + - * / 
+//   if (/[+x÷-]/.test(e.target.textContent)) {          
+//     previousString = calcDisplay.textContent;
+//     currentString = '';
+    
+//     if (e.target.textContent == 'x') {
+//       operator = "*";
+//     } else if (e.target.textContent == '÷') {
+//       operator = "/"
+//     } else {
+//       operator = e.target.textContent;
+//     }
+
+//   };
+
+//   //press =
+//   if (e.target.textContent == '=' && currentString !== '') {
+//     currentString = calcDisplay.textContent;
+//     calcDisplay.textContent = +previousString + +currentString;
+
+//     previousString = calcDisplay.textContent;
+//     currentString = '';
+
+//     // calcDisplay.textContent = previousString + operator + currentString;
+
+//   }
+
+// }
 
   // console.log(e.target.id);
   // console.log(e.target.className);
-}
 
 // center text on buttons, mobile looks off
 // remove dot, then add it back at the end
