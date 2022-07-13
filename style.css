@@ -129,6 +129,10 @@ body {
   padding:0px;
 }
 
+.btn:hover {
+  background-color: #c8dde7;
+}
+
 .btnSmall {
   height: 45px;
   width: 45px;
