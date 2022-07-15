@@ -96,6 +96,7 @@ let previousStroke = '';
 let repeatOperand = ''; //for multiple "=" presses
 let readyForNewOperand = 0;
 
+
 function operate(a, b, sign) {
   switch (sign) {
     case ('+'):
@@ -163,7 +164,6 @@ function keyPress(e) {
   
   if (currentStroke == 'CE') {
     previousStroke = 'CE';
-    currentOperand = '';
     calcDisplay.textContent = '';
   }
   
@@ -177,7 +177,6 @@ function keyPress(e) {
     if (+calcDisplay.textContent == 0) {calcDisplay.textContent = ''}; //remove leading 0
 
     if (calcDisplay.textContent == 0 || calcDisplay.textContent == '' || isNumber(calcDisplay.textContent)) {
-      
       calcDisplay.textContent += currentStroke;
       previousStroke = currentStroke;
     }
@@ -186,13 +185,10 @@ function keyPress(e) {
   if (isOperator(currentStroke) && isOperator(previousStroke)) {
     operator = currentStroke;
     previousStroke = currentStroke;
-
   } else if (isOperator(currentStroke)) {
-
     if (currentOperand !== '') {
       calcDisplay.textContent = operate(currentOperand, calcDisplay.textContent, operator);
     }
-    
     operator = currentStroke;
     currentOperand = calcDisplay.textContent;
     readyForNewOperand = 1;
@@ -200,14 +196,24 @@ function keyPress(e) {
   }
 
   if (currentStroke == '=') {
-    
+    if (previousStroke == '=') {
+      previousOperand = calcDisplay.textContent;
+      calcDisplay.textContent = operate(previousOperand, repeatOperand, operator);
+    } else {
+    previousOperand = calcDisplay.textContent;
+    calcDisplay.textContent = operate(currentOperand, calcDisplay.textContent, operator);
+    currentOperand = '';
+    repeatOperand = previousOperand;
+    readyForNewOperand = 1;
+    previousStroke = currentStroke;
+    }
   }
 
 
 
   if (currentStroke == '%' && isNumber(calcDisplay.textContent)) {
     calcDisplay.textContent = calcDisplay.textContent * .01
-    currentOperand = calcDisplay.textContent;
+    // currentOperand = calcDisplay.textContent;
   }
 
   if (calcDisplay.textContent % 1 != 0 && calcDisplay.textContent !== 'E') {
@@ -224,73 +230,3 @@ function keyPress(e) {
 window.addEventListener('keydown', keyPress)
 // use button-loop to add big button, do not do it separately
 // work out logic to multiple operations, i.e. 5 + 2 * 3 - 1
-
-//old logic
-
-// if (isNumber(currentStroke) && calcDisplay.textContent !== 'E'){
-
-//   if (+calcDisplay.textContent == 0) {currentOperand = ''}; //remove leading 0
-
-//   if (previousStroke == '=') {
-//   // if (!isOperator(previousStroke) && previousStroke == '=') {
-//     previousStroke = '';
-//     previousOperand = '';
-//     operator = '';
-//     previousStroke = currentStroke;
-//     currentOperand = ''
-//     currentOperand += currentStroke
-//     calcDisplay.textContent = currentOperand;
-
-//   } else if (!isOperator(previousStroke)) {
-//     previousStroke = currentStroke;
-//     currentOperand += currentStroke;
-//     calcDisplay.textContent = currentOperand;
-//   } 
-
-//   else if (isOperator(previousStroke)) {
-//     previousStroke = currentStroke;
-//     previousOperand = currentOperand;
-//     currentOperand = ''
-//     currentOperand += currentStroke;
-//     calcDisplay.textContent = currentOperand;
-//   }
-// }
-
-// if (currentStroke == '.' && !currentOperand.includes('.')) {
-//   currentOperand += '.'
-//   calcDisplay.textContent = currentOperand;
-// }
-
-// if (isOperator(currentStroke)) {
-
-//   if (isNumber(previousStroke)) {
-//     console.log('string');
-//     calcDisplay.textContent = operate(previousOperand, currentOperand, operator)
-//   } else if (previousStroke!== '=') {
-//     operator = currentStroke;
-//     previousStroke = currentStroke;
-  
-//   } else if (previousStroke == '=') {
-//     operator = currentStroke;
-//     previousStroke = currentStroke;
-//     previousOperand = calcDisplay.textContent;
-//     currentOperand = calcDisplay.textContent;
-//   } 
-// }
-
-// if (currentStroke == '=') {
-
-//   if(operator == '÷' && +currentOperand == 0) return calcDisplay.textContent='Oh no!';
-
-//   if (previousStroke == '=') {
-//     calcDisplay.textContent = operate(repeatOperand, previousOperand, operator)
-//     previousOperand = calcDisplay.textContent;
-//   } else {
-//     calcDisplay.textContent = operate(previousOperand, currentOperand, operator);
-//     previousStroke = '=';
-//     repeatOperand = previousOperand;
-//     previousOperand = calcDisplay.textContent;
-//     currentOperand = '';
-//   }
-      
-// };
