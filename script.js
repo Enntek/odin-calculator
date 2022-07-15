@@ -150,7 +150,7 @@ function keyPress(e) {
 
   let isOperator = (a) => (/[+x÷-]/.test(a))
 
-  let clearMemory = () => {
+  let clearAll = () => {
     calcDisplay.textContent = '';
     currentOperand = '';
     previousOperand = ''; 
@@ -158,9 +158,9 @@ function keyPress(e) {
     previousStroke = '';
   };
 
-  if (currentStroke == 'C') {clearMemory()};
+  if (currentStroke == 'C') {clearAll()};
 
-  if (currentStroke == 'CE' && previousStroke == 'CE') {clearMemory()};
+  if (currentStroke == 'CE' && previousStroke == 'CE') {clearAll()};
   
   if (currentStroke == 'CE') {
     previousStroke = 'CE';
@@ -176,7 +176,7 @@ function keyPress(e) {
 
     if (+calcDisplay.textContent == 0) {calcDisplay.textContent = ''}; //remove leading 0
 
-    if (calcDisplay.textContent == 0 || calcDisplay.textContent == '' || isNumber(calcDisplay.textContent)) {
+    if (calcDisplay.textContent == '' || isNumber(calcDisplay.textContent)) {
       calcDisplay.textContent += currentStroke;
       previousStroke = currentStroke;
     }
@@ -209,7 +209,9 @@ function keyPress(e) {
     }
   }
 
-
+  if (currentStroke == '.' && !calcDisplay.textContent.includes('.')) {
+    calcDisplay.textContent += '.';
+  }
 
   if (currentStroke == '%' && isNumber(calcDisplay.textContent)) {
     calcDisplay.textContent = calcDisplay.textContent * .01
@@ -221,7 +223,7 @@ function keyPress(e) {
   };
 
   if (calcDisplay.textContent.length > 10) {
-    clearMemory();
+    clearAll();
     calcDisplay.textContent ='E';
   }
 
